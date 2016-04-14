@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileSwitch", "AgileSwitch\AgileSwitch.csproj", "{29E8CDA9-1B56-4D2F-B078-01E50D27F53E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileSwitch.Test", "AgileSwitch.Test\AgileSwitch.Test.csproj", "{F1515DC7-C5C7-448E-8513-D33762950248}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileSwitch.Sample", "AgileSwitch.Sample\AgileSwitch.Sample.csproj", "{B1D85EF4-634A-4D8B-84A6-5E8B41C39E6F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29E8CDA9-1B56-4D2F-B078-01E50D27F53E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29E8CDA9-1B56-4D2F-B078-01E50D27F53E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29E8CDA9-1B56-4D2F-B078-01E50D27F53E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29E8CDA9-1B56-4D2F-B078-01E50D27F53E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1515DC7-C5C7-448E-8513-D33762950248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1515DC7-C5C7-448E-8513-D33762950248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1515DC7-C5C7-448E-8513-D33762950248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1515DC7-C5C7-448E-8513-D33762950248}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D85EF4-634A-4D8B-84A6-5E8B41C39E6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D85EF4-634A-4D8B-84A6-5E8B41C39E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D85EF4-634A-4D8B-84A6-5E8B41C39E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D85EF4-634A-4D8B-84A6-5E8B41C39E6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
