@@ -27,8 +27,6 @@ namespace AgileSwitch
                     then(_value);
                 }
             }
-
-
             return this;
         }
 
