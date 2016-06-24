@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace AgileSwitch.Test
 {
-    [TestClass]
+    [TestFixture]
     public class SwitchTest
     {
-        [TestMethod]
+        [TestCase]
         public void ActionShouldBeExecutedWhenCaseSucceeds()
         {
             var case1Executed = false;
@@ -26,7 +26,7 @@ namespace AgileSwitch.Test
             Assert.AreEqual(false, case4Executed);
         }
 
-        [TestMethod]
+        [TestCase]
         public void SwitchShouldContinueIfNoBreak()
         {
             var caseCount = 0;
@@ -42,7 +42,7 @@ namespace AgileSwitch.Test
             Assert.AreEqual(true, defaultExecuted);
         }
 
-        [TestMethod]
+        [TestCase]
         public void SwitchShouldBreakWhenNecessary()
         {
             var caseId = 0;
