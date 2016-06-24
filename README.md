@@ -1,6 +1,8 @@
 # AgileSwitch
 A small and fast library to allow your code switch-case on runtime values, also it improves multiple if-else/switch-case statements, making them clearer and easier to maintain.
 
+[![Build Status](https://travis-ci.org/FDUdannychen/AgileSwitch.svg?branch=master)](https://travis-ci.org/FDUdannychen/AgileSwitch)
+
 See [the samples](https://github.com/FDUdannychen/AgileSwitch/blob/master/AgileSwitch.Sample/Program.cs).
 
 The MIT License (MIT)
