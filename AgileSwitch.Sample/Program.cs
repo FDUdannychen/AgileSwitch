@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AgileSwitch.Sample
 {
@@ -29,6 +30,7 @@ namespace AgileSwitch.Sample
         {
             Sample1_FallThroughAllCasesWithoutBreak();
             Sample2_HandleDiffeentTypesWithBreak();
+            Sample3_MixedAsyncCases().Wait();
 
             Console.Read();
         }
@@ -67,6 +69,22 @@ namespace AgileSwitch.Sample
                 .Default(a => Console.WriteLine("should never happen because of break"));
 
             Console.WriteLine("-------- end of sample 2 --------");
+        }
+
+        static async Task Sample3_MixedAsyncCases()
+        {
+            await Switch.On(10)
+                .Case<string>(s => Console.WriteLine("can't happen"))
+                .CaseAsync(n => n < 5, async n => { await PrintAsync("can't happen"); }).Break()
+                .Case(n => n > 5, n => Console.WriteLine("back to sync"))
+                .DefaultAsync(async n => { await PrintAsync("default async"); });
+
+            Console.WriteLine("-------- end of sample 3 --------");
+        }
+
+        static async Task PrintAsync(string message)
+        {
+            await Task.Run(() => Console.WriteLine(message));
         }
     }
 }

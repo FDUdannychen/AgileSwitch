@@ -5,51 +5,20 @@ using System.Text;
 
 namespace AgileSwitch
 {
-    class Switchable<T> : ISwitchable<T>
+    public class Switchable<T>
     {
-        private T _value;
-        private bool _break = false;
-        private bool _passCase = false;
+        internal T Value { get; set; }
+        internal bool Broken { get; set; }
+        internal bool AnyCasePassed { get; set; }
 
-        public Switchable(T value)
+        internal Switchable(T value)
         {
-            _value = value;
+            this.Value = value;
         }
 
-        public ISwitchable<T> Case(Func<T, bool> when, Action<T> then)
-        {
-            if (!_break)
-            {
-                _passCase = when(_value);
-
-                if (_passCase)
-                {
-                    then(_value);
-                }
-            }
-            return this;
-        }
-
-        public ISwitchable<T> Case<TCase>(Action<TCase> then)
+        public Switchable<T> Case<TCase>(Action<TCase> then)
         {
             return this.Case(v => v is TCase, v => then((TCase)(object)v));
-        }
-
-        public ISwitchable<T> Break()
-        {
-            if (_passCase)
-            {
-                _break = true;
-            }
-            return this;
-        }
-
-        public void Default(Action<T> action)
-        {
-            if (!_break)
-            {
-                action(_value);
-            }
         }
     }
 }

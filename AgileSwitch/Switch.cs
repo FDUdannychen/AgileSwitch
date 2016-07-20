@@ -7,7 +7,7 @@ namespace AgileSwitch
 {
     public static class Switch
     {
-        public static ISwitchable<T> On<T>(T value)
+        public static Switchable<T> On<T>(T value)
         {
             return new Switchable<T>(value);
         }
