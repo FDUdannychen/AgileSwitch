@@ -1,6 +1,8 @@
 # AgileSwitch
 A small and fast library to allow your code switch-case on runtime values, also it improves multiple if-else/switch-case statements, making them clearer and easier to maintain.
 
+[![Version](https://img.shields.io/nuget/v/AgileSwitch.svg)](https://www.nuget.org/packages/AgileSwitch)
+
 net45(master) [![Build Status](https://travis-ci.org/FDUdannychen/AgileSwitch.svg?branch=net45)](https://travis-ci.org/FDUdannychen/AgileSwitch)
 
 net40         [![Build Status](https://travis-ci.org/FDUdannychen/AgileSwitch.svg?branch=net40)](https://travis-ci.org/FDUdannychen/AgileSwitch)
