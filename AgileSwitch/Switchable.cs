@@ -30,6 +30,11 @@ namespace AgileSwitch
             return this;
         }
 
+        public ISwitchable<T> Case(T comparand, Action<T> then)
+        {
+            return this.Case(v => v.Equals(comparand), then);
+        }
+
         public ISwitchable<T> Case<TCase>(Action<TCase> then)
         {
             return this.Case(v => v is TCase, v => then((TCase)(object)v));
