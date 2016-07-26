@@ -23,6 +23,11 @@ namespace AgileSwitch
             return source;
         }
 
+        public static async Task<Switchable<T>> Case<T>(this Task<Switchable<T>> task, T comparand, Action<T> then)
+        {
+            return await task.Case(v => v == null ? comparand == null : v.Equals(comparand), then);
+        }
+
         public static async Task<Switchable<T>> CaseAsync<T>(this Task<Switchable<T>> task, Func<T, bool> when, Func<T, Task> then)
         {
             var source = await task;
@@ -36,6 +41,11 @@ namespace AgileSwitch
                 }
             }
             return source;
+        }
+
+        public static async Task<Switchable<T>> CaseAsync<T>(this Task<Switchable<T>> task, T comparand, Func<T, Task> then)
+        {
+            return await task.CaseAsync(v => v == null ? comparand == null : v.Equals(comparand), then);
         }
 
         public static async Task<Switchable<T>> CaseAsync<T>(this Task<Switchable<T>> task, Func<T, Task<bool>> when, Action<T> then)

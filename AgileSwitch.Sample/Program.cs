@@ -63,8 +63,11 @@ namespace AgileSwitch.Sample
 
             Switch.On(animal)
                 .Case(a => a.Age > 5, a => Console.WriteLine("it's old"))
-                .Case<Dog>(d => d.Bark()).Break()
-                .Case<Cat>(c => c.Meow()).Break()
+                .Case(new Dog(), a => Console.WriteLine("can't happen"))
+                .Case<Dog>(d => d.Bark())
+                    .Break()
+                .Case<Cat>(c => c.Meow())
+                    .Break()
                 .Case(a => a.Age > 0, a => Console.WriteLine("should never happen because of break"))
                 .Default(a => Console.WriteLine("should never happen because of break"));
 
@@ -74,8 +77,11 @@ namespace AgileSwitch.Sample
         static async Task Sample3_MixedAsyncCases()
         {
             await Switch.On(10)
+                .Case(100, n => Console.WriteLine("can't happen"))                
                 .Case<string>(s => Console.WriteLine("can't happen"))
-                .CaseAsync(n => n < 5, async n => { await PrintAsync("can't happen"); }).Break()
+                .CaseAsync(100, n => PrintAsync("can't happen"))
+                .CaseAsync(n => n < 5, async n => { await PrintAsync("can't happen"); })
+                    .Break()
                 .Case(n => n > 5, n => Console.WriteLine("back to sync"))
                 .DefaultAsync(async n => { await PrintAsync("default async"); });
 

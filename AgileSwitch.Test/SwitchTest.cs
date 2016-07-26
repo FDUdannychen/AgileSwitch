@@ -15,6 +15,7 @@ namespace AgileSwitch.Test
             var case4Executed = false;
 
             Switch.On(10)
+                .Case(100, n => Assert.Fail("how can 10 equals 100"))
                 .Case<string>(s => case1Executed = true)
                 .Case(n => n > 5, n => case2Executed = true)
                 .Case<int>(n => case3Executed = true)
@@ -35,10 +36,11 @@ namespace AgileSwitch.Test
             Switch.On(10)
                 .Case(n => n < 100, n => caseCount++)
                 .Case(n => n < 101, n => caseCount++)
+                .Case(10, n => caseCount++)
                 .Case(n => n < 102, n => caseCount++)
                 .Default(n => defaultExecuted = true);
 
-            Assert.AreEqual(3, caseCount);
+            Assert.AreEqual(4, caseCount);
             Assert.AreEqual(true, defaultExecuted);
         }
 
@@ -49,8 +51,10 @@ namespace AgileSwitch.Test
 
             Switch.On(10)
                 .Case(n => n < 100, n => caseId = 1)
-                .Case(n => n > 10, n => caseId = 2).Break()
-                .Case<int>(n => caseId = 3).Break()
+                .Case(n => n > 10, n => caseId = 2)
+                    .Break()
+                .Case<int>(n => caseId = 3)
+                    .Break()
                 .Case(n => n < 100, n => caseId = 4)
                 .Default(n => Assert.Fail("should break before default"));
 

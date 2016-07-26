@@ -8,6 +8,11 @@ namespace AgileSwitch
 {
     public static class SwitchableExtensions
     {
+        public static Switchable<T> Case<T>(this Switchable<T> source, T comparand, Action<T> then)
+        {
+            return source.Case(v => v == null ? comparand == null : v.Equals(comparand), then);
+        }
+
         public static Switchable<T> Case<T>(this Switchable<T> source, Func<T, bool> when, Action<T> then)
         {
             if (!source.Broken)
@@ -20,6 +25,11 @@ namespace AgileSwitch
                 }
             }
             return source;
+        }
+
+        public static async Task<Switchable<T>> CaseAsync<T>(this Switchable<T> source, T comparand, Func<T, Task> then)
+        {
+            return await source.CaseAsync(v => v == null ? comparand == null : v.Equals(comparand), then);
         }
 
         public static async Task<Switchable<T>> CaseAsync<T>(this Switchable<T> source, Func<T, bool> when, Func<T, Task> then)

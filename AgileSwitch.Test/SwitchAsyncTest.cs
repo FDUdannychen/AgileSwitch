@@ -18,44 +18,46 @@ namespace AgileSwitch.Test
             await Switch.On(10)
                 .Case<string>(s => case1Executed = true)
                 .CaseAsync(n => n > 5, async n => { await Task.Delay(2000); case2Executed = true; })
-                //.Case<int>(n => case3Executed = true)
-                .Case(n => n > 100, n => case4Executed = true);
+                .Case(10, n => case3Executed = true)
+                .CaseAsync(100, async n => { await Task.Delay(1); case4Executed = true; });
 
             Assert.AreEqual(false, case1Executed);
             Assert.AreEqual(true, case2Executed);
-            //Assert.AreEqual(true, case3Executed);
+            Assert.AreEqual(true, case3Executed);
             Assert.AreEqual(false, case4Executed);
         }
 
-        //[TestCase]
-        //public void SwitchShouldContinueIfNoBreak()
-        //{
-        //    var caseCount = 0;
-        //    var defaultExecuted = false;
+        [TestCase]
+        public async Task SwitchShouldContinueIfNoBreak()
+        {
+            var caseCount = 0;
+            var defaultExecuted = false;
 
-        //    Switch.On(10)
-        //        .Case(n => n < 100, n => caseCount++)
-        //        .Case(n => n < 101, n => caseCount++)
-        //        .Case(n => n < 102, n => caseCount++)
-        //        .Default(n => defaultExecuted = true);
+            await Switch.On(10)
+                .CaseAsync(n => n < 100, async n => { await Task.Delay(1); caseCount++; })
+                .CaseAsync(10, async n => { await Task.Delay(1); caseCount++; })
+                .CaseAsync(async n => { await Task.Delay(1); return n == 10; }, async n => { await Task.Delay(1); caseCount++; })
+                .DefaultAsync(async n => { await Task.Delay(1); defaultExecuted = true; });
 
-        //    Assert.AreEqual(3, caseCount);
-        //    Assert.AreEqual(true, defaultExecuted);
-        //}
+            Assert.AreEqual(3, caseCount);
+            Assert.AreEqual(true, defaultExecuted);
+        }
 
-        //[TestCase]
-        //public void SwitchShouldBreakWhenNecessary()
-        //{
-        //    var caseId = 0;
+        [TestCase]
+        public async Task SwitchShouldBreakWhenNecessary()
+        {
+            var caseId = 0;
 
-        //    Switch.On(10)
-        //        .Case(n => n < 100, n => caseId = 1)
-        //        .Case(n => n > 10, n => caseId = 2).Break()
-        //        .Case<int>(n => caseId = 3).Break()
-        //        .Case(n => n < 100, n => caseId = 4)
-        //        .Default(n => Assert.Fail("should break before default"));
+            await Switch.On(10)
+                .Case(n => n < 100, n => caseId = 1)
+                .CaseAsync(100, async n => { await Task.Delay(1); caseId = 2; })
+                    .Break()
+                .Case(10, n => caseId = 3)
+                    .Break()
+                .CaseAsync(n => n < 100, async n => { await Task.Delay(1); caseId = 4; })
+                .Default(n => Assert.Fail("should break before default"));
 
-        //    Assert.AreEqual(3, caseId);
-        //}
+            Assert.AreEqual(3, caseId);
+        }
     }
 }
