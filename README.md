@@ -9,7 +9,7 @@ See [the samples](https://github.com/FDUdannychen/AgileSwitch/blob/master/AgileS
 
 #NET45 Updates
 - add async/await support
-- 
+- add T comparand support
 
 
 
