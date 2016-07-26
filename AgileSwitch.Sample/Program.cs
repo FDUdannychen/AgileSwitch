@@ -61,8 +61,11 @@ namespace AgileSwitch.Sample
 
             Switch.On(animal)
                 .Case(a => a.Age > 5, a => Console.WriteLine("it's old"))
-                .Case<Dog>(d => d.Bark()).Break()
-                .Case<Cat>(c => c.Meow()).Break()
+                .Case(new Dog(), a => Console.WriteLine("can't happen"))
+                .Case<Dog>(d => d.Bark())
+                    .Break()
+                .Case<Cat>(c => c.Meow())
+                    .Break()
                 .Case(a => a.Age > 0, a => Console.WriteLine("should never happen because of break"))
                 .Default(a => Console.WriteLine("should never happen because of break"));
 
