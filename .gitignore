@@ -1,4 +1,7 @@
 # Files ignored
+*.csproj.user
+*.xproj.user
+project.lock.json
 
 # Folders ignored
 [Bb]in/
@@ -6,7 +9,6 @@
 #[Rr]elease*/
 obj/
 [Tt]est[Rr]esult*
-*.csproj.user
 
 # NuGet files
 packages/
