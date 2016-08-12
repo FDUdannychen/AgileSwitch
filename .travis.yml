@@ -1,9 +1,9 @@
 language: csharp
-solution: AgileSwitch.sln
-mono: 
- - latest
 
- script:
+mono: 
+  - latest
+
+script:
   - dotnet restore
   - dotnet build src/AgileSwitch
   - dotnet test test/AgileSwitch.Test
