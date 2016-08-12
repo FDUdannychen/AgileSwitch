@@ -5,11 +5,30 @@ A small and fast library to allow your code switch-case on runtime values, also 
 
 [![Build Status](https://travis-ci.org/FDUdannychen/AgileSwitch.svg)](https://travis-ci.org/FDUdannychen/AgileSwitch)
 
-See [the samples](https://github.com/FDUdannychen/AgileSwitch/blob/master/AgileSwitch.Sample/Program.cs).
+#Release Notes
+- v1.1.2 portable .NET CORE
+- v1.1.1 add async/await support
+- v1.1.1 add T comparand support
 
-#NET45 Updates
-- add async/await support
-- add T comparand support
+Examples:
+```
+  Switch.On(10)
+      .Case(100, n => Console.WriteLine("can't happen"))
+          .Break()
+      .Case<string>(s => Console.WriteLine("can't happen"))
+      .Case(n => n > 5, n => Console.WriteLine("matches"))
+      .Default(n => Console.WriteLine("default because n>5 doesn't break"));
+      
+  await Switch.On(10)
+      .Case(100, n => Console.WriteLine("can't happen"))                
+      .Case<string>(s => Console.WriteLine("can't happen"))
+      .CaseAsync(100, n => PrintAsync("can't happen"))
+      .CaseAsync(n => n < 5, async n => { await PrintAsync("can't happen"); })
+          .Break()
+      .Case(n => n > 5, n => Console.WriteLine("back to sync"))
+          .Break()
+      .DefaultAsync(async n => { await PrintAsync("can't happen because n>5 breaks"); });
+```
 
 
 
