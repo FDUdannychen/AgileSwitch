@@ -11,7 +11,7 @@ A small and fast library to allow your code switch-case on runtime values, also 
 - v1.1.1 add T comparand support
 
 Examples:
-```
+```csharp
   Switch.On(10)
       .Case(100, n => Console.WriteLine("can't happen"))
           .Break()

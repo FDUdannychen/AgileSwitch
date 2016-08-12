@@ -12,7 +12,7 @@ obj/
 
 # NuGet files
 packages/
-*.nupkg
+packaging/
 
 # Publish Web Output
 *.Publish.xml
