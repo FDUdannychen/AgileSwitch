@@ -67,7 +67,7 @@ namespace AgileSwitch.Test
         }
 
         [TestCase]
-        public async Task DefaultShouldBeExecutedIfNoCaseMatched()
+        public async Task DefaultShouldBeExecutedIfNoCaseMatchedAsync()
         {
             var case1Executed = false;
             var case2Executed = false;
