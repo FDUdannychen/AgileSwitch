@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.1.2",
+  "version": "2.0.0",
 
   "frameworks": {
     "net40": {
@@ -21,7 +21,7 @@
     "summary": "A small and fast library to allow your code switch-case on runtime values, also it improves multiple if-else/switch-case statements, making them clearer and easier to maintain. ",
     "owners": [ "dannychen" ],
     "authors": [ "dannychen" ],
-    "releaseNotes": "v1.1.2 add .net core support",
+    "releaseNotes": "v2.0.0 add return value support (break change)",
     "tags": [ "C#", ".NET", ".NET CORE" ],
     "licenseUrl": "https://github.com/FDUdannychen/AgileSwitch/blob/master/LICENSE",
     "requireLicenseAcceptance": false,

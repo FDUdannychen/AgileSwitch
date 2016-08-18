@@ -6,28 +6,45 @@ A small and fast library to allow your code switch-case on runtime values, also 
 [![Build Status](https://travis-ci.org/FDUdannychen/AgileSwitch.svg)](https://travis-ci.org/FDUdannychen/AgileSwitch)
 
 #Release Notes
+- v2.0.0 add return value support (break change)
 - v1.1.2 portable .NET CORE
 - v1.1.1 add async/await support
 - v1.1.1 add T comparand support
 
 Examples:
 ```csharp
-  Switch.On(10)
-      .Case(100, n => Console.WriteLine("can't happen"))
-          .Break()
-      .Case<string>(s => Console.WriteLine("can't happen"))
-      .Case(n => n > 5, n => Console.WriteLine("matches"))
-      .Default(n => Console.WriteLine("default because n>5 doesn't break"));
-      
-  await Switch.On(10)
-      .Case(100, n => Console.WriteLine("can't happen"))                
-      .Case<string>(s => Console.WriteLine("can't happen"))
-      .CaseAsync(100, n => PrintAsync("can't happen"))
-      .CaseAsync(n => n < 5, async n => { await PrintAsync("can't happen"); })
-          .Break()
-      .Case(n => n > 5, n => Console.WriteLine("back to sync"))
-          .Break()
-      .DefaultAsync(async n => { await PrintAsync("can't happen because n>5 breaks"); });
+Switch.On(number)
+    .When(100)
+        .Then(n => Print("it's 100"))
+    .When(n => n > 10)
+        .Then(n => Print("it's greater than 10"))
+    .Default(n => Print("the default message will be shown because no .Break() calls"));
+
+await Switch.On(number)
+    .When(100)
+        .Then(n => Print("it's 100"))
+        .Break()
+    .When(n => n > 10)
+        .ThenAsync(async n => await PrintAsync("it's greater than 10"))
+        .Break()
+    .WhenAsync(async n => await Task.FromResult(n < 5))
+        .Then(n => Print("it's less than 5"))
+        .Break()
+    .WhenAsync(async n => await Task.FromResult(n == 1))
+        .ThenAsync(async n => await PrintAsync("it's 1"))
+        .Break()
+    .DefaultAsync(async n => await PrintAsync("the default message won't be shown if any previous case meets"));
+
+string description = await Switch.On(number)
+    .When(100)
+        .Return("it's 100")
+    .When(n => n > 10)
+        .ReturnAsync(async n => await Task.FromResult("it's greater than 10"))
+    .WhenAsync(async n => await Task.FromResult(n < 5))
+        .Return(n => "it's less than 5")
+    .WhenAsync(async n => await Task.FromResult(n == 1))
+        .ReturnAsync(async n => await Task.FromResult("it's 1"))
+    .Default("i have no idea");
 ```
 
 
