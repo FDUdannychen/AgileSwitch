@@ -7,7 +7,7 @@ namespace AgileSwitch.Test
     public class SwitchTest
     {
         [TestCase]
-        public void ActionShouldBeExecutedWhenCaseSucceeds()
+        public void SwitchShouldContinueIfNoBreak()
         {
             var case1Executed = false;
             var case2Executed = false;
@@ -15,50 +15,70 @@ namespace AgileSwitch.Test
             var case4Executed = false;
 
             Switch.On(10)
-                .Case(100, n => Assert.Fail("how can 10 equals 100"))
-                .Case<string>(s => case1Executed = true)
-                .Case(n => n > 5, n => case2Executed = true)
-                .Case<int>(n => case3Executed = true)
-                .Case(n => n > 100, n => case4Executed = true);
+                .When(100)
+                    .Then(n => case1Executed = true)
+                .When(n => n > 5)
+                    .Then(n => case2Executed = true)
+                .When(1)
+                    .Then(n => case3Executed = true)
+                .Default(n => case4Executed = true);
 
             Assert.AreEqual(false, case1Executed);
             Assert.AreEqual(true, case2Executed);
-            Assert.AreEqual(true, case3Executed);
+            Assert.AreEqual(false, case3Executed);
+            Assert.AreEqual(true, case4Executed);
+        }
+
+        [TestCase]
+        public void SwitchShouldBreakWhenCasePassed()
+        {
+            var case1Executed = false;
+            var case2Executed = false;
+            var case3Executed = false;
+            var case4Executed = false;
+
+            Switch.On(10)
+                .When(n => n < 5)
+                    .Then(n => case1Executed = true)
+                    .Break()
+                .When(10)
+                    .Then(n => case2Executed = true)
+                    .Break()
+                .When(n => n > 1)
+                    .Then(n => case3Executed = true)
+                    .Break()
+                .Default(n => case4Executed = true);
+
+            Assert.AreEqual(false, case1Executed);
+            Assert.AreEqual(true, case2Executed);
+            Assert.AreEqual(false, case3Executed);
             Assert.AreEqual(false, case4Executed);
         }
 
         [TestCase]
-        public void SwitchShouldContinueIfNoBreak()
+        public void DefaultShouldBeExecutedIfNoCaseMatched()
         {
-            var caseCount = 0;
-            var defaultExecuted = false;
+            var case1Executed = false;
+            var case2Executed = false;
+            var case3Executed = false;
+            var case4Executed = false;
 
             Switch.On(10)
-                .Case(n => n < 100, n => caseCount++)
-                .Case(n => n < 101, n => caseCount++)
-                .Case(10, n => caseCount++)
-                .Case(n => n < 102, n => caseCount++)
-                .Default(n => defaultExecuted = true);
-
-            Assert.AreEqual(4, caseCount);
-            Assert.AreEqual(true, defaultExecuted);
-        }
-
-        [TestCase]
-        public void SwitchShouldBreakWhenNecessary()
-        {
-            var caseId = 0;
-
-            Switch.On(10)
-                .Case(n => n < 100, n => caseId = 1)
-                .Case(n => n > 10, n => caseId = 2)
+                .When(100)
+                    .Then(n => case1Executed = true)
                     .Break()
-                .Case<int>(n => caseId = 3)
+                .When(n => n < 5)
+                    .Then(n => case2Executed = true)
                     .Break()
-                .Case(n => n < 100, n => caseId = 4)
-                .Default(n => Assert.Fail("should break before default"));
+                .When(1)
+                    .Then(n => case3Executed = true)
+                    .Break()
+                .Default(n => case4Executed = true);
 
-            Assert.AreEqual(3, caseId);
+            Assert.AreEqual(false, case1Executed);
+            Assert.AreEqual(false, case2Executed);
+            Assert.AreEqual(false, case3Executed);
+            Assert.AreEqual(true, case4Executed);
         }
     }
 }

@@ -9,56 +9,90 @@ namespace AgileSwitch.Test
     public class SwitchAsyncTest
     {
         [TestCase]
-        public async Task ActionShouldBeExecutedWhenCaseAsyncSucceeds()
+        public async Task SwitchShouldContinueIfNoBreakAsync()
         {
             var case1Executed = false;
             var case2Executed = false;
             var case3Executed = false;
             var case4Executed = false;
-
-            await Switch.On(10)
-                .Case<string>(s => case1Executed = true)
-                .CaseAsync(n => n > 5, async n => { await Task.Delay(2000); case2Executed = true; })
-                .Case(10, n => case3Executed = true)
-                .CaseAsync(100, async n => { await Task.Delay(1); case4Executed = true; });
-
-            Assert.AreEqual(false, case1Executed);
-            Assert.AreEqual(true, case2Executed);
-            Assert.AreEqual(true, case3Executed);
-            Assert.AreEqual(false, case4Executed);
-        }
-
-        [TestCase]
-        public async Task SwitchShouldContinueIfNoBreak()
-        {
-            var caseCount = 0;
             var defaultExecuted = false;
 
             await Switch.On(10)
-                .CaseAsync(n => n < 100, async n => { await Task.Delay(1); caseCount++; })
-                .CaseAsync(10, async n => { await Task.Delay(1); caseCount++; })
-                .CaseAsync(async n => { await Task.Delay(1); return n == 10; }, async n => { await Task.Delay(1); caseCount++; })
-                .DefaultAsync(async n => { await Task.Delay(1); defaultExecuted = true; });
+                .WhenAsync(async n => await Task.FromResult(n > 5).ConfigureAwait(false))
+                    .ThenAsync(async n=> await Task.FromResult(case1Executed = true).ConfigureAwait(false))
+                .When(100)
+                    .ThenAsync(async n => await Task.FromResult(case2Executed = true).ConfigureAwait(false))
+                .When(1)
+                    .Then(n => case3Executed = true)
+                .WhenAsync(async n => await Task.FromResult(n > 1).ConfigureAwait(false))
+                    .Then(n => case4Executed = true)                                
+                .DefaultAsync(async n => await Task.FromResult(defaultExecuted = true).ConfigureAwait(false));
 
-            Assert.AreEqual(3, caseCount);
+            Assert.AreEqual(true, case1Executed);
+            Assert.AreEqual(false, case2Executed);
+            Assert.AreEqual(false, case3Executed);
+            Assert.AreEqual(true, case4Executed);
             Assert.AreEqual(true, defaultExecuted);
         }
 
         [TestCase]
-        public async Task SwitchShouldBreakWhenNecessary()
+        public async Task SwitchShouldBreakWhenCasePassedAsync()
         {
-            var caseId = 0;
+            var case1Executed = false;
+            var case2Executed = false;
+            var case3Executed = false;
+            var case4Executed = false;
+            var defaultExecuted = false;
 
             await Switch.On(10)
-                .Case(n => n < 100, n => caseId = 1)
-                .CaseAsync(100, async n => { await Task.Delay(1); caseId = 2; })
+                .When(100)
+                    .ThenAsync(async n => await Task.FromResult(case1Executed = true).ConfigureAwait(false))
                     .Break()
-                .Case(10, n => caseId = 3)
+                .WhenAsync(async n => await Task.FromResult(n > 5).ConfigureAwait(false))
+                    .ThenAsync(async n => await Task.FromResult(case2Executed = true).ConfigureAwait(false))
                     .Break()
-                .CaseAsync(n => n < 100, async n => { await Task.Delay(1); caseId = 4; })
-                .Default(n => Assert.Fail("should break before default"));
+                .When(10)
+                    .Then(n => case3Executed = true)
+                    .Break()
+                .WhenAsync(async n => await Task.FromResult(n > 1).ConfigureAwait(false))
+                    .Then(n => case4Executed = true)
+                    .Break()
+                .Default(n => defaultExecuted = true);
 
-            Assert.AreEqual(3, caseId);
+            Assert.AreEqual(false, case1Executed);
+            Assert.AreEqual(true, case2Executed);
+            Assert.AreEqual(false, case3Executed);
+            Assert.AreEqual(false, case4Executed);
+            Assert.AreEqual(false, defaultExecuted);
+        }
+
+        [TestCase]
+        public async Task DefaultShouldBeExecutedIfNoCaseMatched()
+        {
+            var case1Executed = false;
+            var case2Executed = false;
+            var case3Executed = false;
+            var case4Executed = false;
+            var defaultExecuted = false;
+
+            await Switch.On(10)
+                .When(100)
+                    .ThenAsync(async n => await Task.FromResult(case1Executed = true).ConfigureAwait(false))
+                    .Break()
+                .WhenAsync(async n => await Task.FromResult(n < 5).ConfigureAwait(false))
+                    .ThenAsync(async n => await Task.FromResult(case2Executed = true).ConfigureAwait(false))
+                    .Break()
+                .WhenAsync(async n => await Task.FromResult(n < 1).ConfigureAwait(false))
+                    .Then(n => case4Executed = true)
+                .When(1)
+                    .Then(n => case3Executed = true)
+                .Default(n => defaultExecuted = true);
+
+            Assert.AreEqual(false, case1Executed);
+            Assert.AreEqual(false, case2Executed);
+            Assert.AreEqual(false, case3Executed);
+            Assert.AreEqual(false, case4Executed);
+            Assert.AreEqual(true, defaultExecuted);
         }
     }
 }
