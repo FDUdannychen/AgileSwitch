@@ -6,6 +6,7 @@ using NUnit.Framework;
 namespace AgileSwitch.Test
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.Fixtures)]
     public class SwitchAsyncTest
     {
         [TestCase]

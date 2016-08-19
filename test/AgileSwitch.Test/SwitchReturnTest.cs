@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace AgileSwitch.Test
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.Fixtures)]
     public class SwitchReturnTest
     {
         static string VALUE_FACTORY_EVALUATED = "Value factory shouldn't be evaluated";
