@@ -1,3 +1,6 @@
+# Note
+Since [pattern matching](https://github.com/dotnet/roslyn/blob/master/docs/features/patterns.md) is introduced in C#7, the project is supposed to be used in old versions of the language only.
+
 # AgileSwitch
 A small and fast library to allow your code switch-case on runtime values, also it improves multiple if-else/switch-case statements, making them clearer and easier to maintain.
 
